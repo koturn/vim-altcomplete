@@ -167,8 +167,8 @@ function! altcomplete#var(arglead, cmdline, cursorpos) " {{{
     let l:vars = map(sort(keys(g:)), '"g:" . v:val')
   else
     let l:vars = sort(s:L.flatten(map(keys(s:VAR_DICT),
-          \ 'map(keys(s:VAR_DICT[v:val]), v:val ==# "g:" ? "v:val" : string(v:val) . " . v:val")')
-          \ ), 1)
+          \ 'v:val ==# "g:" ? keys(s:VAR_DICT[v:val]) : map(keys(s:VAR_DICT[v:val]), string(v:val) . " . v:val")'
+          \ ), 1))
   endif
   return s:filter(l:vars, a:arglead)
 endfunction " }}}

@@ -23,8 +23,8 @@ let s:PRE_COMMANDS = ['!', '#', '&', '*', '<', '=', '>', '@']
 let s:CSCOPE_LIST = ['add', 'find', 'help', 'kill', 'reset', 'show']
 let s:ENV_COMMAND = has('win32') ? 'set' : 'env'
 let s:PATH_SEPARATOR = has('win32') ? ';' : ':'
-let s:EMBEDDED_FUNCTIONS = sort(readfile('listfile/function.txt'))
-let s:EVENT_LIST = sort(readfile('listfile/event.txt'))
+let s:EMBEDDED_FUNCTIONS = sort(readfile(expand('<sfile>:h') . '/listfile/function.txt'))
+let s:EVENT_LIST = sort(readfile(expand('<sfile>:h') . '/listfile/event.txt'))
 let s:HISTORY_LIST = [
       \ '/', ':', '=', '>', '?', '@',
       \ 'all', 'cmd', 'debug', 'expr', 'input', 'search'

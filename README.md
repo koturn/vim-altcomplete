@@ -52,7 +52,7 @@ command! -nargs=* -complete=customlist,example02 Example02  echo <q-args>
 - [x] sign
 - [x] syntax
 - [x] syntime
-- [ ] tag
+- [x] tag
 - [ ] tag_listfiles
 - [x] user
 - [x] var

@@ -154,6 +154,11 @@ function! altcomplete#syntax(arglead, cmdline, cursorpos) " {{{
         \ 'fnamemodify(v:val, ":t:r")'))
   return s:filter(l:colorlist, a:arglead)
 endfunction " }}}
+function! altcomplete#tag(arglead, cmdline, cursorpos) " {{{
+  let l:tags = map(filter(s:L.flatten(map(tagfiles(), 'readfile(v:val)'), 1),
+        \ 'v:val !~# "^!"'), 'substitute(v:val, "\t.*$", "", "")')
+  return s:filter(l:tags, a:arglead)
+endfunction " }}}
 function! altcomplete#user(arglead, cmdline, cursorpos) " {{{
   if filereadable('/etc/passwd')
     let l:users = sort(map(split(s:P.system('cat /etc/passwd'), "\n"), 'split(v:val, ":")[0]'))

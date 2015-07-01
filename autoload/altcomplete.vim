@@ -35,7 +35,7 @@ let s:VAR_DICT = {'b:' : b:, 'g:' : g:, 't:' : t:, 'v:' : v:, 'w:' : w:}
 " }}}
 
 
-function! altcomplete#autogroup(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#augroup(arglead, cmdline, cursorpos) " {{{
   let l:augroups = split(s:redir('augroup')[1 :], '  ')
   return s:filter(l:augroups, a:arglead)
 endfunction " }}}

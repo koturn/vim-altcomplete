@@ -35,35 +35,35 @@ let s:VAR_DICT = {'b:' : b:, 'g:' : g:, 't:' : t:, 'v:' : v:, 'w:' : w:}
 " }}}
 
 
-function! altcomplete#augroup(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#augroup(arglead, cmdline, cursorpos) abort " {{{
   let augroups = split(s:redir('augroup')[1 :], '  ')
   return s:filter(augroups, a:arglead)
 endfunction " }}}
-function! altcomplete#behave(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#behave(arglead, cmdline, cursorpos) abort " {{{
   return s:filter(copy(s:BEHAVE_LIST), a:arglead)
 endfunction " }}}
-function! altcomplete#buffer(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#buffer(arglead, cmdline, cursorpos) abort " {{{
   let buffers = map(split(s:redir('ls'), "\n"), 'substitute(v:val, "^.\\+\"\\(.\\+\\)\".\\+$", "\\1", "g")')
   return s:filter(buffers, a:arglead)
 endfunction " }}}
-function! altcomplete#color(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#color(arglead, cmdline, cursorpos) abort " {{{
   let colorlist = sort(map(split(globpath(&runtimepath,
         \ 'colors/*.vim'), "\n"), 'fnamemodify(v:val, ":t:r")'))
   return s:filter(colorlist, a:arglead)
 endfunction " }}}
-function! altcomplete#command(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#command(arglead, cmdline, cursorpos) abort " {{{
   let commands = s:PRE_COMMANDS + sort(map(split(s:redir('command'),"\n")[1 :],
         \ 'split(v:val[4 :], "\\s\\+")[0]'))
   return s:filter(commands, a:arglead)
 endfunction " }}}
-function! altcomplete#compiler(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#compiler(arglead, cmdline, cursorpos) abort " {{{
   let compilers = sort(map(split(s:redir('compiler'), "\n"), 'fnamemodify(v:val, ":t:r")'))
   return s:filter(compilers, a:arglead)
 endfunction " }}}
-function! altcomplete#cscope(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#cscope(arglead, cmdline, cursorpos) abort " {{{
   return s:filter(copy(s:CSCOPE_LIST), a:arglead)
 endfunction " }}}
-function! altcomplete#dir(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#dir(arglead, cmdline, cursorpos) abort " {{{
   if a:arglead ==# '~'
     return [expand('~') . '/']
   elseif a:arglead ==# ''
@@ -78,19 +78,19 @@ function! altcomplete#dir(arglead, cmdline, cursorpos) " {{{
   endif
   return s:filter(dirs, a:arglead)
 endfunction " }}}
-function! altcomplete#environment(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#environment(arglead, cmdline, cursorpos) abort " {{{
   let envs = map(split(s:P.system(s:ENV_COMMAND), "\n"), 'split(v:val, "=")[0]')
   return s:filter(envs, a:arglead)
 endfunction " }}}
-function! altcomplete#event(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#event(arglead, cmdline, cursorpos) abort " {{{
   return s:filter(copy(s:EVENT_LIST), a:arglead)
 endfunction " }}}
-function! altcomplete#expression(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#expression(arglead, cmdline, cursorpos) abort " {{{
   let [global_funcs, local_funcs] = s:get_functions()
   let vars = altcomplete#var(a:arglead, a:cmdline, a:cursorpos)
   return s:filter(sort(global_funcs + vars) + local_funcs, a:arglead)
 endfunction " }}}
-function! altcomplete#file(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#file(arglead, cmdline, cursorpos) abort " {{{
   if a:arglead ==# '~'
     return [expand('~') . '/']
   elseif a:arglead ==# ''
@@ -105,30 +105,30 @@ function! altcomplete#file(arglead, cmdline, cursorpos) " {{{
   endif
   return s:filter(files, a:arglead)
 endfunction " }}}
-function! altcomplete#file_in_path(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#file_in_path(arglead, cmdline, cursorpos) abort " {{{
   let files = sort(map(s:L.flatten(map(map(split(&path, ','),
         \ 'v:val[0] ==# "." ? expand("%:p:h") . "/" . v:val : v:val'),
         \ 'split(globpath(v:val, "*"), "\n")'), 1),
         \ 'fnameescape(fnamemodify(v:val, ":t"))'))
   return s:filter(files, a:arglead)
 endfunction " }}}
-function! altcomplete#filetype(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#filetype(arglead, cmdline, cursorpos) abort " {{{
   let colorlist = sort(map(split(globpath(&runtimepath, 'ftplugin/*.vim'), "\n"),
         \ 'fnamemodify(v:val, ":t:r")'))
   return s:filter(colorlist, a:arglead)
 endfunction " }}}
-function! altcomplete#function(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#function(arglead, cmdline, cursorpos) abort " {{{
   let [global_funcs, local_funcs] = s:get_functions()
   return s:filter(global_funcs + local_funcs, a:arglead)
 endfunction " }}}
-function! altcomplete#highlight(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#highlight(arglead, cmdline, cursorpos) abort " {{{
   let highlights = sort(map(split(s:redir('highlight'), "\n"), 'split(v:val, "\\s\\+")[0]'))
   return s:filter(highlights, a:arglead)
 endfunction " }}}
-function! altcomplete#history(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#history(arglead, cmdline, cursorpos) abort " {{{
   return s:filter(copy(s:HISTORY_LIST), a:arglead)
 endfunction " }}}
-function! altcomplete#locale(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#locale(arglead, cmdline, cursorpos) abort " {{{
   if executable('locale')
     let locales = split(s:P.system('locale -a'), "\n")
     return s:filter(locales, a:arglead)
@@ -136,36 +136,36 @@ function! altcomplete#locale(arglead, cmdline, cursorpos) " {{{
     return []
   endif
 endfunction " }}}
-function! altcomplete#option(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#option(arglead, cmdline, cursorpos) abort " {{{
   let options = insert(sort(map(filter(split(s:redir('set all'), ' \{3,}\|\n')[3 :],
         \ 'stridx(v:val, "no") != 0'),
         \ 'substitute(stridx(v:val, "=") == -1 ? v:val : matchstr(v:val, "^.\\{-}\\ze="), "^  ", "", "")')), 'all')
   return options
 endfunction " }}}
-function! altcomplete#shellcmd(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#shellcmd(arglead, cmdline, cursorpos) abort " {{{
   let cmds = map(filter(s:L.flatten(map(split($PATH, s:PATH_SEPARATOR),
         \ 'split(globpath(v:val, "*"), "\n")'), 1),
         \ 'executable(v:val) || isdirectory(v:val)'),
         \ 'fnamemodify(v:val, ":t") . (isdirectory(v:val) ? "/" : "")')
   return s:filter(cmds, a:arglead)
 endfunction " }}}
-function! altcomplete#sign(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#sign(arglead, cmdline, cursorpos) abort " {{{
   return s:filter(copy(s:SIGN_LIST), a:arglead)
 endfunction " }}}
-function! altcomplete#syntime(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#syntime(arglead, cmdline, cursorpos) abort " {{{
   return s:filter(copy(s:SYNTIME_LIST), a:arglead)
 endfunction " }}}
-function! altcomplete#syntax(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#syntax(arglead, cmdline, cursorpos) abort " {{{
   let colorlist = sort(map(split(globpath(&runtimepath, 'syntax/*.vim'), "\n"),
         \ 'fnamemodify(v:val, ":t:r")'))
   return s:filter(colorlist, a:arglead)
 endfunction " }}}
-function! altcomplete#tag(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#tag(arglead, cmdline, cursorpos) abort " {{{
   let tags = map(filter(s:L.flatten(map(tagfiles(), 'readfile(v:val)'), 1),
         \ 'v:val !~# "^!"'), 'substitute(v:val, "\t.*$", "", "")')
   return s:filter(tags, a:arglead)
 endfunction " }}}
-function! altcomplete#user(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#user(arglead, cmdline, cursorpos) abort " {{{
   if filereadable('/etc/passwd')
     let users = sort(map(split(s:P.system('cat /etc/passwd'), "\n"), 'split(v:val, ":")[0]'))
     return s:filter(users, a:arglead)
@@ -173,7 +173,7 @@ function! altcomplete#user(arglead, cmdline, cursorpos) " {{{
     return []
   endif
 endfunction " }}}
-function! altcomplete#var(arglead, cmdline, cursorpos) " {{{
+function! altcomplete#var(arglead, cmdline, cursorpos) abort " {{{
   if a:arglead =~# '^g:'
     let vars = map(sort(keys(g:)), '"g:" . v:val')
   else
